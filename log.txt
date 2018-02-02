@@ -1,0 +1,11 @@
+iteration for 5 requests
+Search pageSize: 100, results size: 
+"searchresult.error"
+Search pageSize: 100, results size: 
+"searchresult.error"
+Search pageSize: 100, results size: 
+"searchresult.error"
+Search pageSize: 100, results size: 
+"searchresult.error"
+Search pageSize: 100, results size: 
+"searchresult.error"

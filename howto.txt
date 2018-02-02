@@ -1,0 +1,54 @@
+################ set JAVA_HOME ########################################
+
+1. edit /root/.bashrc and add these lines:
+    export JAVA_HOME=/opt/jdk1.6.0_37  
+    export PATH=$PATH:$JAVA_HOME/bin
+2. save and quit then source the env file: source .bashrc 
+
+
+#########################################################################
+
+
+####################  JVM MEMORY ANALYSYS USING JSTAT ###############################
+
+Login to your Linux/Unix Server
+Enter the below command to get the JAVA PID running on the server.
+ps –ef|grep –i java
+
+From the output take the application JAVA PID.
+
+Using jstat command with gc option to find out the JVM Heap Memory Usage.
+<JAVA_HOME>/bin/jstat –gc <JAVA PID>
+
+heap-jstat
+
+S0C – CURRENT SURVIVOR SPACE 0 CAPACITY (KB).
+S1C  –  CURRENT SURVIVOR SPACE 1 CAPACITY (KB).
+S0U – SURVIVOR SPACE 0 UTILIZATION (KB).
+S1U  – SURVIVOR SPACE 1 UTILIZATION (KB).
+EC    – CURRENT EDEN SPACE CAPACITY (KB).
+EU    – EDEN SPACE UTILIZATION (KB).
+OC    – CURRENT OLD SPACE CAPACITY (KB).
+OU    – OLD SPACE UTILIZATION (KB).
+PC     – CURRENT PERMANENT SPACE CAPACITY (KB).
+PU     – PERMANENT SPACE UTILIZATION (KB).
+YGC   – NUMBER OF YOUNG GENERATION GC EVENTS.
+YGCT – YOUNG GENERATION GARBAGE COLLECTION TIME.
+FGC   – NUMBER OF FULL GC EVENTS.
+FGCT – FULL GARBAGE COLLECTION TIME.
+GCT   – TOTAL GARBAGE COLLECTION TIME.
+
+When you add all the ‘utilizations’ i.e OU + EU + S0U + S1U  you get the total Heap utilization.
+
+$JAVA_HOME/bin/jstat -gc 4908 | tail -1| awk '{split($0,a," "); sum=a[3]+a[4]+a[6]+a[8]; print sum " KB"}'
+
+
+#################################### CPU USAGE #################################################
+
+#    top -bn 2 -d 0.01 | grep '^Cpu.s.' | tail -n 1 | awk '{print $2+$4+$6}'
+#        -----  ------   -----------    ---------   ----------------------
+#          |      |           |             |             |------> add the values
+#          |      |           |             |--> keep only the 2nd iteration
+#          |      |           |----------------> keep only the CPU use lines
+#          |      |----------------------------> set the delay between runs
+#          |-----------------------------------> run twice in batch mode
